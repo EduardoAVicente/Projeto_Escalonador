@@ -61,14 +61,14 @@ public class Processo {
         System.out.println("Chegada: " + chegada);
         System.out.print("IO: ");
         if (IO != null) {
-            for (float io : IO) {
-                System.out.print(io + ", ");
+            for (int i = 0; i < IO.size() - 1; i++) {
+                System.out.print(IO.get(i) + ", ");
             }
-        }else{
+            System.out.println(IO.get(IO.size() - 1));
+        } else {
             System.out.println("null");
         }
         System.out.println("");
-            System.out.println("");
     }
 
 }
