@@ -6,11 +6,11 @@ import java.util.Optional;
 
 public class Processo {
     private String PID;
-    private float duracao;
-    private float chegada;
-    private List<Float> IO;
+    private int duracao;
+    private int chegada;
+    private List<Integer> IO;
 
-    public Processo(String PID, float duracao, float chegada, List<Float> IO) {
+    public Processo(String PID, int duracao, int chegada, List<Integer> IO) {
         this.PID = PID;
         this.duracao = duracao;
         this.chegada = chegada;
@@ -25,27 +25,27 @@ public class Processo {
         this.PID = PID;
     }
 
-    public float getDuracao() {
+    public int getDuracao() {
         return duracao;
     }
 
-    public void setDuracao(float duracao) {
+    public void setDuracao(int duracao) {
         this.duracao = duracao;
     }
 
-    public float getChegada() {
+    public int getChegada() {
         return chegada;
     }
 
-    public void setChegada(float chegada) {
+    public void setChegada(int chegada) {
         this.chegada = chegada;
     }
 
-    public float getIO() {
+    public int getIO() {
         if (IO != null && !IO.isEmpty()) {
             return IO.get(0);
         } else {
-            return 0.0f;
+            return 0;//rever
         }
     }
 
