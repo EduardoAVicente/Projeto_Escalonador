@@ -2,7 +2,6 @@
 for %%I in ("%CD%") do (
     set "caminho=%%~I"
 )
-echo %caminho%
 if not exist "%~dp0bin" (
     mkdir "%~dp0bin"
 )
