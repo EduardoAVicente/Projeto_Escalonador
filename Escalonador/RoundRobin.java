@@ -55,6 +55,14 @@ public class RoundRobin {
 
             cpu.tempo();
 
+
+
+            if(cpu.getIO() == jobutil.getTime()){
+                fila.adicionar(cpu);
+                cpu = fila.get(0);
+                System.out.println("IO");
+            }
+
             if (cpu.getTempo() == 0) {
                 if (processos.size() == 0) {
                     cpu = null;

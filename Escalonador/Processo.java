@@ -47,7 +47,7 @@ public class Processo {
         if (IO != null && !IO.isEmpty()) {
             return IO.get(0);
         } else {
-            return 0;// rever
+            return -1;// rever
         }
     }
 
