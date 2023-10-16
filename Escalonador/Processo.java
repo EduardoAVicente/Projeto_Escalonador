@@ -9,12 +9,14 @@ public class Processo {
     private int duracao;
     private int chegada;
     private List<Integer> IO;
+    private int tempo;
 
     public Processo(String PID, int duracao, int chegada, List<Integer> IO) {
         this.PID = PID;
         this.duracao = duracao;
         this.chegada = chegada;
         this.IO = IO;
+        this.tempo = this.duracao;
     }
 
     public String getPID() {
@@ -45,7 +47,7 @@ public class Processo {
         if (IO != null && !IO.isEmpty()) {
             return IO.get(0);
         } else {
-            return 0;//rever
+            return 0;// rever
         }
     }
 
@@ -53,6 +55,14 @@ public class Processo {
         if (IO != null && !IO.isEmpty()) {
             IO.remove(0);
         }
+    }
+
+    public void tempo() {
+        this.tempo = tempo - 1;
+    }
+
+    public int getTempo(){
+        return this.tempo;
     }
 
     public void imprime() {
