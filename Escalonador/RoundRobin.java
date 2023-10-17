@@ -60,7 +60,7 @@ public class RoundRobin {
             if(cpu.getIO() == jobutil.getTime()){
                 fila.adicionar(cpu);
                 cpu = fila.get(0);
-                System.out.println("IO");
+                System.out.println("IOd");
             }
 
             if (cpu.getTempo() == 0) {
