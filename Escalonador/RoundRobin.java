@@ -7,7 +7,8 @@ public class RoundRobin {
     private int Quantum;
     private int tempo = 0;
     private List<Processo> processos;
-    // private Fila fila;
+    JobUtil jobutil;
+    Fila fila;
     private Processo cpu = null;
 
     public RoundRobin(List<Processo> processos, int Quantum) {
@@ -16,29 +17,60 @@ public class RoundRobin {
     }
 
     public void inicar() {
-        JobUtil jobutil = new JobUtil();
+        // Inicializando objetos e variaveis
+        jobutil = new JobUtil();
+        fila = new Fila();
+        cpu = processos.get(0);
+        processos.remove(0);
 
-        Fila fila = new Fila();
+        // logs iniciais
         System.out.println("***********************************");
         System.out.println("***** ESCALONADOR ROUND ROBIN *****");
         System.out.println("-----------------------------------");
         System.out.println("------- INICIANDO SIMULACAO -------");
         System.out.println("-----------------------------------");
-        cpu = processos.get(0);
-        processos.remove(0);
 
+        // loop de processos
         while (cpu != null) {
-            // roda o tempo
+            // adiciona a espera
             jobutil.espera();
-
-            // Sistema de logs
             System.out.println("********** TEMPO " + jobutil.getTime() + " **************");
-            // LOGS DE EVETOS
-            if (processos.get(0).getChegada() == jobutil.getTime()) {// adiciona novos pocessos
-                System.out.println("#[evento] CHEGADA <" + processos.get(0).getPID() + ">");
+
+            // procediemtnos de I/O
+            if (cpu.getIO() == cpu.getTempo()) {
+                System.out.println("#[evento] OPERACAO I/O <" + cpu.getPID() + ">");
+                fila.adicionar(cpu);
+                cpu = fila.remover();
             }
 
-            // LOGS DE MONITORIAÇÃO
+            // procedimento de chegada de processo
+            if (processos.size() > 0) {
+                if (processos.get(0).getChegada() == jobutil.getTime()) {
+                    System.out.println("#[evento] CHEGADA <" + processos.get(0).getPID() + ">");
+                    fila.adicionar(processos.get(0));
+                    processos.remove(0);
+                }
+            }
+
+            // verifica se o processo da cpu terminou
+            if (cpu.getTempo() == 0) {
+                System.out.println("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
+
+                // verifica se ainda a processos
+                if (fila.size() > 0) {
+                    cpu = fila.remover();
+                } else {
+                    cpu = null;
+                    System.out.println("ACABARAM OS PROCESSOS!!!");
+                    System.out.println("-----------------------------------");
+                    System.out.println("------- Encerrando simulacao ------");
+                    System.out.println("-----------------------------------");
+                    break;
+                }
+
+            }
+
+            // print de estado da fila e cpu
             if (fila.size() == 0) {
                 System.out.println("FILA: Nao ha processos na fila");
             } else {
@@ -51,33 +83,9 @@ public class RoundRobin {
 
             System.out.println("CPU: " + cpu.getPID() + "(" + cpu.getTempo() + ")");
 
-            // processos
-
+            // computado o processo da cpu
             cpu.tempo();
 
-
-
-            if(cpu.getIO() == jobutil.getTime()){
-                fila.adicionar(cpu);
-                cpu = fila.get(0);
-                System.out.println("IOd");
-            }
-
-            if (cpu.getTempo() == 0) {
-                if (processos.size() == 0) {
-                    cpu = null;
-                } else {
-                    cpu = processos.get(0);
-                }
-
-            }
-
-            if (processos.get(0).getChegada() == jobutil.getTime()) {// adiciona novos pocessos
-                fila.adicionar(cpu);
-                cpu = processos.get(0);
-                processos.remove(0);
-
-            }
         }
 
     }
