@@ -12,7 +12,7 @@ public class Leitor {
     private static List<Processo> processos = new ArrayList<>();
 
     public static List<Processo> Processos() {
-        String nomeArquivo = "./Escalonador/arquivo.txt";
+        String nomeArquivo = "./Escalonador/arquivoProcessos.txt";
 
         try {
             FileReader arquivoReader = new FileReader(nomeArquivo);
