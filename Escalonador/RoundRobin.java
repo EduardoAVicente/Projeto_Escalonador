@@ -9,6 +9,7 @@ public class RoundRobin {
     private List<Processo> processos;
     JobUtil jobutil;
     Fila fila;
+    Log log;
     private Processo cpu = null;
 
     public RoundRobin(List<Processo> processos, int Quantum) {
@@ -20,25 +21,26 @@ public class RoundRobin {
         // Inicializando objetos e variaveis
         jobutil = new JobUtil();
         fila = new Fila();
+        log = new Log();
         cpu = processos.get(0);
         processos.remove(0);
 
         // logs iniciais
-        System.out.println("***********************************");
-        System.out.println("***** ESCALONADOR ROUND ROBIN *****");
-        System.out.println("-----------------------------------");
-        System.out.println("------- INICIANDO SIMULACAO -------");
-        System.out.println("-----------------------------------");
+        log.write("***********************************");
+        log.write("***** ESCALONADOR ROUND ROBIN *****");
+        log.write("-----------------------------------");
+        log.write("------- INICIANDO SIMULACAO -------");
+        log.write("-----------------------------------");
 
         // loop de processos
         while (cpu != null) {
             // adiciona a espera
             jobutil.espera();
-            System.out.println("********** TEMPO " + jobutil.getTime() + " **************");
+            log.write("********** TEMPO " + jobutil.getTime() + " **************");
 
             // procediemtnos de I/O
             if (cpu.getIO() == cpu.getTempo()) {
-                System.out.println("#[evento] OPERACAO I/O <" + cpu.getPID() + ">");
+                log.write("#[evento] OPERACAO I/O <" + cpu.getPID() + ">");
                 fila.adicionar(cpu);
                 cpu = fila.remover();
             }
@@ -46,7 +48,7 @@ public class RoundRobin {
             // procedimento de chegada de processo
             if (processos.size() > 0) {
                 if (processos.get(0).getChegada() == jobutil.getTime()) {
-                    System.out.println("#[evento] CHEGADA <" + processos.get(0).getPID() + ">");
+                    log.write("#[evento] CHEGADA <" + processos.get(0).getPID() + ">");
                     fila.adicionar(processos.get(0));
                     processos.remove(0);
                 }
@@ -54,17 +56,17 @@ public class RoundRobin {
 
             // verifica se o processo da cpu terminou
             if (cpu.getTempo() == 0) {
-                System.out.println("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
+                log.write("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
 
                 // verifica se ainda a processos
                 if (fila.size() > 0) {
                     cpu = fila.remover();
                 } else {
                     cpu = null;
-                    System.out.println("ACABARAM OS PROCESSOS!!!");
-                    System.out.println("-----------------------------------");
-                    System.out.println("------- Encerrando simulacao ------");
-                    System.out.println("-----------------------------------");
+                    log.write("ACABARAM OS PROCESSOS!!!");
+                    log.write("-----------------------------------");
+                    log.write("------- Encerrando simulacao ------");
+                    log.write("-----------------------------------");
                     break;
                 }
 
@@ -72,22 +74,23 @@ public class RoundRobin {
 
             // print de estado da fila e cpu
             if (fila.size() == 0) {
-                System.out.println("FILA: Nao ha processos na fila");
+                log.write("FILA: Nao ha processos na fila");
             } else {
-                System.out.print("FILA: ");
+                StringBuilder filaString = new StringBuilder();
+                filaString.append("FILA: ");
                 for (int i = 0; i < fila.size(); i++) {
-                    System.out.print(fila.get(i).getPID() + "(" + fila.get(i).getTempo() + ")" + " ");
+                    filaString.append(fila.get(i).getPID()).append("(").append(fila.get(i).getTempo()).append(")")
+                            .append(" ");
                 }
-                System.out.println();
+                log.write(filaString.toString());
             }
 
-            System.out.println("CPU: " + cpu.getPID() + "(" + cpu.getTempo() + ")");
-
+            log.write("CPU: " + cpu.getPID() + "(" + cpu.getTempo() + ")");
             // computado o processo da cpu
             cpu.tempo();
 
         }
-
+        log.close("RoundRobin");
     }
 
 }
