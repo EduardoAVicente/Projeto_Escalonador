@@ -1,11 +1,8 @@
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoundRobin {
     private int Quantum;
     private int QuantumCont = 0;
-    private int tempo = 0;
     private List<Processo> processos;
     JobUtil jobutil;
     Fila fila;
