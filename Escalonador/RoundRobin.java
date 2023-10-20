@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoundRobin {
     private int Quantum;
     private int QuantumCont = 0;
     private List<Processo> processos;
+    private List<Processo> saida;
     JobUtil jobutil;
     Fila fila;
     Log log;
@@ -12,12 +14,14 @@ public class RoundRobin {
     public RoundRobin(List<Processo> processos, int Quantum, int tempo) {
         this.Quantum = Quantum;
         this.processos = processos;
+        this.saida = new ArrayList<>();
         jobutil = new JobUtil(tempo);
         fila = new Fila();
         log = new Log();
     }
 
-    public void inicar() {
+
+    public List<Processo> inicar() {
         // Inicializando objetos e variaveis
         cpu = processos.get(0);
         cpu.setEspera(jobutil.getCiclo());
@@ -75,6 +79,7 @@ public class RoundRobin {
             if (cpu.getDuracao() <= 0) {
                 log.write("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
                 QuantumCont = 0;
+                saida.add(cpu);
                 // verifica se ainda a processos
                 if (fila.size() > 0) {
                     cpu = fila.remover();
@@ -123,6 +128,7 @@ public class RoundRobin {
         }
 
         log.close("RoundRobin");
+        return this.saida;
     }
 
 }
