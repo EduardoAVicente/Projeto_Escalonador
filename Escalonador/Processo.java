@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Processo {
     private String PID;
     private int duracao;
     private int chegada;
+    private List<Integer> espera;
     private List<Integer> IO;
 
     public Processo(String PID, int duracao, int chegada, List<Integer> IO) {
@@ -11,7 +13,7 @@ public class Processo {
         this.duracao = duracao;
         this.chegada = chegada;
         this.IO = IO;
-        this.duracao = this.duracao;
+        this.espera = new ArrayList<>();
     }
 
     public String getPID() {
@@ -56,6 +58,21 @@ public class Processo {
         return false;
     }
 
+    public double getEspera() {
+        int soma = 0;
+
+        int primeiroValor = espera.get(0);
+
+        for (int i = 0; i < espera.size(); i++) {
+            soma += (espera.get(i) - primeiroValor);
+        }
+
+        return (double) soma / espera.size();
+    }
+
+    public void setEspera(int tempoEspera) {
+        espera.add(espera.size(), tempoEspera);
+    }
 
     public void imprime() {
         System.out.println("Processo: " + PID);

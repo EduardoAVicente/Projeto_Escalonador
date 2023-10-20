@@ -9,7 +9,7 @@ public class RoundRobin {
     Log log;
     private Processo cpu = null;
 
-    public RoundRobin(List<Processo> processos, int Quantum,int tempo) {
+    public RoundRobin(List<Processo> processos, int Quantum, int tempo) {
         this.Quantum = Quantum;
         this.processos = processos;
         jobutil = new JobUtil(tempo);
@@ -20,6 +20,7 @@ public class RoundRobin {
     public void inicar() {
         // Inicializando objetos e variaveis
         cpu = processos.get(0);
+        cpu.setEspera(jobutil.getCiclo());
         processos.remove(0);
 
         // logs iniciais
@@ -42,6 +43,11 @@ public class RoundRobin {
                 log.write("#[evento] OPERACAO I/O <" + cpu.getPID() + ">");
                 fila.adicionar(cpu);
                 cpu = fila.remover();
+                if (fila.size() > 0) {// verifica se o processo mudou para validação da espera
+                    if (fila.get(fila.size() - 1) != cpu) {
+                        cpu.setEspera(jobutil.getCiclo());
+                    }
+                }
                 QuantumCont = 0;
             }
             // procedimento de Quantum
@@ -49,6 +55,11 @@ public class RoundRobin {
                 log.write("#[evento] FIM QUANTUM <" + cpu.getPID() + ">");
                 fila.adicionar(cpu);
                 cpu = fila.remover();
+                if (fila.size() > 0) {// verifica se o processo mudou para validação da espera
+                    if (fila.get(fila.size() - 1) != cpu) {
+                        cpu.setEspera(jobutil.getCiclo());
+                    }
+                }
             }
 
             // procedimento de chegada de processo
@@ -67,6 +78,7 @@ public class RoundRobin {
                 // verifica se ainda a processos
                 if (fila.size() > 0) {
                     cpu = fila.remover();
+                    cpu.setEspera(jobutil.getCiclo());
                 } else {
                     cpu = null;
                     if (fila.size() == 0) {
@@ -109,6 +121,7 @@ public class RoundRobin {
             QuantumCont += 1;
 
         }
+
         log.close("RoundRobin");
     }
 
