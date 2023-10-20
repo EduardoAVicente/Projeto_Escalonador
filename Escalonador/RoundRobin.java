@@ -8,17 +8,18 @@ public class RoundRobin {
     Fila fila;
     Log log;
     private Processo cpu = null;
+    private int tempo;
 
-    public RoundRobin(List<Processo> processos, int Quantum) {
+    public RoundRobin(List<Processo> processos, int Quantum,int tempo) {
         this.Quantum = Quantum;
         this.processos = processos;
+        jobutil = new JobUtil(tempo);
+        fila = new Fila();
+        log = new Log();
     }
 
     public void inicar() {
         // Inicializando objetos e variaveis
-        jobutil = new JobUtil(1);
-        fila = new Fila();
-        log = new Log();
         cpu = processos.get(0);
         processos.remove(0);
 
