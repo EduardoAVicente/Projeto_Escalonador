@@ -8,6 +8,7 @@ public class JobUtil {
             time = time + tempoAtraso;
         } catch (InterruptedException e) {
         }
+
     }
 
     public int getTime() {

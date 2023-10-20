@@ -42,25 +42,29 @@ public class Processo {
         this.chegada = chegada;
     }
 
-    public int getIO() {
+    public boolean getIO() {
         if (IO != null && !IO.isEmpty()) {
-            return IO.get(0);
-        } else {
-            return -1;// rever
+            if (IO.get(0) == 0) {
+                if (IO.size() > 1) {
+                    IO.set(1, IO.get(1) - IO.get(0));
+                }
+                IO.remove(0);
+                return true;
+            }
         }
-    }
-
-    public void removePrimeiroIO() {
-        if (IO != null && !IO.isEmpty()) {
-            IO.remove(0);
-        }
+        return false;
     }
 
     public void tempo() {
         this.tempo = tempo - 1;
+        if (IO != null && !IO.isEmpty()) {
+            for (int i = 0; i < IO.size(); i++) {
+                IO.set(i, IO.get(i) - 1);
+            }
+        }
     }
 
-    public int getTempo(){
+    public int getTempo() {
         return this.tempo;
     }
 
