@@ -5,14 +5,13 @@ public class Processo {
     private int duracao;
     private int chegada;
     private List<Integer> IO;
-    private int tempo;
 
     public Processo(String PID, int duracao, int chegada, List<Integer> IO) {
         this.PID = PID;
         this.duracao = duracao;
         this.chegada = chegada;
         this.IO = IO;
-        this.tempo = this.duracao;
+        this.duracao = this.duracao;
     }
 
     public String getPID() {
@@ -24,11 +23,16 @@ public class Processo {
     }
 
     public int getDuracao() {
-        return duracao;
+        return this.duracao;
     }
 
-    public void setDuracao(int duracao) {
-        this.duracao = duracao;
+    public void atualizaDuracao() {
+        this.duracao = duracao - 1;
+        if (IO != null && !IO.isEmpty()) {
+            for (int i = 0; i < IO.size(); i++) {
+                IO.set(i, IO.get(i) - 1);
+            }
+        }
     }
 
     public int getChegada() {
@@ -52,18 +56,6 @@ public class Processo {
         return false;
     }
 
-    public void tempo() {
-        this.tempo = tempo - 1;
-        if (IO != null && !IO.isEmpty()) {
-            for (int i = 0; i < IO.size(); i++) {
-                IO.set(i, IO.get(i) - 1);
-            }
-        }
-    }
-
-    public int getTempo() {
-        return this.tempo;
-    }
 
     public void imprime() {
         System.out.println("Processo: " + PID);

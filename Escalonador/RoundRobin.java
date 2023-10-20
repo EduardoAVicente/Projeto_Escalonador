@@ -8,7 +8,6 @@ public class RoundRobin {
     Fila fila;
     Log log;
     private Processo cpu = null;
-    private int tempo;
 
     public RoundRobin(List<Processo> processos, int Quantum,int tempo) {
         this.Quantum = Quantum;
@@ -62,7 +61,7 @@ public class RoundRobin {
             }
 
             // verifica se o processo da cpu terminou
-            if (cpu.getTempo() <= 0) {
+            if (cpu.getDuracao() <= 0) {
                 log.write("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
                 QuantumCont = 0;
                 // verifica se ainda a processos
@@ -76,7 +75,7 @@ public class RoundRobin {
                         StringBuilder filaString = new StringBuilder();
                         filaString.append("FILA: ");
                         for (int i = 0; i < fila.size(); i++) {
-                            filaString.append(fila.get(i).getPID()).append("(").append(fila.get(i).getTempo())
+                            filaString.append(fila.get(i).getPID()).append("(").append(fila.get(i).getDuracao())
                                     .append(")")
                                     .append(" ");
                         }
@@ -98,15 +97,15 @@ public class RoundRobin {
                 StringBuilder filaString = new StringBuilder();
                 filaString.append("FILA: ");
                 for (int i = 0; i < fila.size(); i++) {
-                    filaString.append(fila.get(i).getPID()).append("(").append(fila.get(i).getTempo()).append(")")
+                    filaString.append(fila.get(i).getPID()).append("(").append(fila.get(i).getDuracao()).append(")")
                             .append(" ");
                 }
                 log.write(filaString.toString());
             }
 
-            log.write("CPU: " + cpu.getPID() + "(" + cpu.getTempo() + ")");
+            log.write("CPU: " + cpu.getPID() + "(" + cpu.getDuracao() + ")");
             // computado o processo da cpu
-            cpu.tempo();
+            cpu.atualizaDuracao();
             QuantumCont += 1;
 
         }
