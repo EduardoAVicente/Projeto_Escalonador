@@ -19,7 +19,7 @@ public class RoundRobin {
 
     public void inicar() {
         // Inicializando objetos e variaveis
-        jobutil = new JobUtil();
+        jobutil = new JobUtil(1);
         fila = new Fila();
         log = new Log();
         cpu = processos.get(0);
@@ -35,10 +35,10 @@ public class RoundRobin {
         while (cpu != null) {
             // adiciona a espera
             jobutil.espera();
-            if (jobutil.getTime() < 10) {
-                log.write("********** TEMPO " + jobutil.getTime() + " **************");
+            if (jobutil.getCiclo() < 10) {
+                log.write("********** TEMPO " + jobutil.getCiclo() + " **************");
             } else {
-                log.write("********** TEMPO " + jobutil.getTime() + " *************");
+                log.write("********** TEMPO " + jobutil.getCiclo() + " *************");
             }
             // procedimento de I/O
             if (cpu.getIO() == true) {
@@ -56,7 +56,7 @@ public class RoundRobin {
 
             // procedimento de chegada de processo
             if (processos.size() > 0) {
-                if (processos.get(0).getChegada() == jobutil.getTime()) {
+                if (processos.get(0).getChegada() == jobutil.getCiclo()) {
                     log.write("#[evento] CHEGADA <" + processos.get(0).getPID() + ">");
                     fila.adicionar(processos.get(0));
                     processos.remove(0);
