@@ -1,5 +1,3 @@
-package Escalonador;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,7 +10,7 @@ public class Leitor {
     private static List<Processo> processos = new ArrayList<>();
 
     public static List<Processo> Processos() {
-        String nomeArquivo = "./Escalonador/arquivoProcessos.txt";
+        String nomeArquivo = "arquivoProcessos.txt";
 
         try {
             FileReader arquivoReader = new FileReader(nomeArquivo);

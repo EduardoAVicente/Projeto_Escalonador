@@ -8,4 +8,4 @@ if not exist "%~dp0bin" (
 javac *.java    
 move *.class bin
 cls
-java -classpath %caminho%/bin Main.java
+java -classpath %caminho%/bin Main

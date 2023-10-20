@@ -1,5 +1,3 @@
-package Escalonador;
-
 public class Fila {
 
     private Node inicio;

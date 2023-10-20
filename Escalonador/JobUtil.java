@@ -1,5 +1,3 @@
-package Escalonador;
-
 public class JobUtil {
     private int time;
 
