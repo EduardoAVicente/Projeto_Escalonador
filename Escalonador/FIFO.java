@@ -1,9 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoundRobin {
-    private int Quantum;
-    private int QuantumCont = 0;
+public class FIFO {
     private List<Processo> processos;
     private List<Processo> saida;
     JobUtil jobutil;
@@ -11,15 +9,13 @@ public class RoundRobin {
     Log log;
     private Processo cpu = null;
 
-    public RoundRobin(List<Processo> processos, int Quantum, int tempo) {
-        this.Quantum = Quantum;
+    public FIFO(List<Processo> processos, int tempo) {
         this.processos = processos;
         this.saida = new ArrayList<>();
         jobutil = new JobUtil(tempo);
         fila = new Fila();
         log = new Log();
     }
-
 
     public List<Processo> iniciar() {
         // Inicializando objetos e variaveis
@@ -29,7 +25,7 @@ public class RoundRobin {
 
         // logs iniciais
         log.write("***********************************");
-        log.write("***** ESCALONADOR ROUND ROBIN *****");
+        log.write("******** ESCALONADOR FIFO *********");
         log.write("-----------------------------------");
         log.write("------- INICIANDO SIMULACAO -------");
         log.write("-----------------------------------");
@@ -52,18 +48,6 @@ public class RoundRobin {
                         cpu.setEspera(jobutil.getCiclo());
                     }
                 }
-                QuantumCont = 0;
-            }
-            // procedimento de Quantum
-            if (QuantumCont == Quantum) {
-                log.write("#[evento] FIM QUANTUM <" + cpu.getPID() + ">");
-                fila.adicionar(cpu);
-                cpu = fila.remover();
-                if (fila.size() > 0) {// verifica se o processo mudou para validação da espera
-                    if (fila.get(fila.size() - 1) != cpu) {
-                        cpu.setEspera(jobutil.getCiclo());
-                    }
-                }
             }
 
             // procedimento de chegada de processo
@@ -78,7 +62,6 @@ public class RoundRobin {
             // verifica se o processo da cpu terminou
             if (cpu.getDuracao() <= 0) {
                 log.write("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
-                QuantumCont = 0;
                 saida.add(cpu);
                 // verifica se ainda a processos
                 if (fila.size() > 0) {
@@ -123,11 +106,10 @@ public class RoundRobin {
             log.write("CPU: " + cpu.getPID() + "(" + cpu.getDuracao() + ")");
             // computado o processo da cpu
             cpu.atualizaDuracao();
-            QuantumCont += 1;
 
         }
 
-        log.close("RoundRobin");
+        log.close("FIFO");
         return this.saida;
     }
 
