@@ -1,0 +1,9 @@
+/bin
+*.class
+.vscode
+RoundRobin*.txt
+FIFO*.txt
+SJF*.txt
+Prioridade*.txt
+Prioridade*.txt
+/output
