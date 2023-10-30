@@ -33,7 +33,7 @@ public class Log {
         String originalFileName = filename;
         String fileExtension = ".txt";
         int count = 0;
-        String filePath = outputDirectory + filename;
+        String filePath = outputDirectory + "/" + filename;
 
         // Criando a pasta de saída se não existir
         try {
