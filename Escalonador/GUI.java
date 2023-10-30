@@ -15,6 +15,10 @@ public class GUI extends javax.swing.JFrame {
     private String entradaSaida = null;
     private List<Processo> entrada;
     private List<String> logConsole;
+    private RoundRobin roundrobin;
+    private Prioridade prioridade;
+    private FIFO fifo;
+    private SJF sjf;
 
     public GUI() {
         initComponents();
@@ -382,28 +386,48 @@ public class GUI extends javax.swing.JFrame {
 
     }
 
+    private void cancelarProcesso() {
+        try {
+            if (roundrobin != null && !roundrobin.isDone()) {
+                roundrobin.cancel(true);
+            } else if (prioridade != null && !prioridade.isDone()) {
+                prioridade.cancel(true);
+            } else if (fifo != null && !fifo.isDone()) {
+                fifo.cancel(true);
+            } else if (sjf != null && !sjf.isDone()) {
+                sjf.cancel(true);
+            }
+        } catch (Exception e) {
+
+        }
+        reset();
+    }
+
+    public void reset() {
+        console.setText("");
+    }
+
     private void simulacao() {
         List<Processo> processos = new ArrayList();
-        console.setText("");
         int time = parseInteger(entradaCiclo.getText().toString());
         String outputDirectory = entradaSaida;
-
+        cancelarProcesso();
         if (selecionarAlgoritmo.getSelectedIndex() == 0) {
-            RoundRobin roundrobin = new RoundRobin(entrada, parseInteger(entradaQuantum.getText().toString()),
+            roundrobin = new RoundRobin(entrada, parseInteger(entradaQuantum.getText().toString()),
                     time, outputDirectory, this);
             roundrobin.execute();
 
         } else if (selecionarAlgoritmo.getSelectedIndex() == 1) {
-            Prioridade prioridade = new Prioridade(entrada, time, outputDirectory,this);
+            prioridade = new Prioridade(entrada, time, outputDirectory, this);
             prioridade.execute();
 
         } else if (selecionarAlgoritmo.getSelectedIndex() == 2) {
-            FIFO FIFO = new FIFO(entrada, time, outputDirectory,this);
-            FIFO.execute();
+            fifo = new FIFO(entrada, time, outputDirectory, this);
+            fifo.execute();
 
         } else if (selecionarAlgoritmo.getSelectedIndex() == 3) {
-            SJF SJF = new SJF(entrada, time, outputDirectory,this);
-           SJF.execute();
+            sjf = new SJF(entrada, time, outputDirectory, this);
+            sjf.execute();
         }
 
     }
