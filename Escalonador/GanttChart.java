@@ -15,7 +15,6 @@ class GanttTask extends JFrame {
         this.start = 0; // Início é calculado automaticamente
         this.end = end;
 
-        
     }
 
     public String getTitle() {
@@ -42,8 +41,9 @@ public class GanttChart extends JFrame {
     private List<Color> colors;
     private Map<String, Integer> titleToRow;
     private int currentTime = 0;
+    private String processo;
 
-    public GanttChart() {
+    public GanttChart(String processo) {
         tasks = new ArrayList<>();
         colors = new ArrayList<>();
         titleToRow = new HashMap<>();
@@ -52,8 +52,9 @@ public class GanttChart extends JFrame {
         colors.add(Color.BLUE);
         colors.add(Color.ORANGE);
         colors.add(Color.MAGENTA);
+        this.processo = processo;
 
-        setTitle("Diagrama de Gantt");
+        setTitle("Diagrama de Gantt " + processo);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -144,16 +145,4 @@ public class GanttChart extends JFrame {
         panel.repaint();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GanttChart chart = new GanttChart();
-            chart.setSize(800, 600);
-            chart.add("Tarefa 1", 200);
-            chart.add("Tarefa 2", 400);
-            chart.add("Tarefa 1", 300);
-            chart.add("Tarefa 3", 500);
-            chart.add("Tarefa 2", 600);
-            chart.setVisible(true);
-        });
-    }
 }

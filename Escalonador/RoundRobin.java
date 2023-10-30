@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
 public class RoundRobin extends SwingWorker<List<Processo>, String> {
@@ -23,7 +24,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
         jobutil = new JobUtil(tempo);
         fila = new Fila();
         log = new Log(outputDirectory);
-        chart = new GanttChart();
+        chart = new GanttChart("Round Robin");
         this.gui = gui;
         log.setGUI(gui);
     }
@@ -140,6 +141,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
 
         log.close("RoundRobin");
         chart.setVisible(true);
+        chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         return this.saida;
     }
 
@@ -152,11 +154,9 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        if(gui != null){
+        if (gui != null) {
             gui.setTabela(saida);
         }
     }
-
-
 
 }

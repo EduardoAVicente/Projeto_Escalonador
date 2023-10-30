@@ -384,7 +384,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void simulacao() {
         List<Processo> processos = new ArrayList();
-
+        console.setText("");
         int time = parseInteger(entradaCiclo.getText().toString());
         String outputDirectory = entradaSaida;
 

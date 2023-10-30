@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
 public class SJF extends SwingWorker<List<Processo>, String> {
@@ -22,7 +23,7 @@ public class SJF extends SwingWorker<List<Processo>, String> {
         this.jobutil = new JobUtil(tempo);
         this.fila = new Fila();
         this.log = new Log(outputDirectory);
-        this.chart = new GanttChart();
+        this.chart = new GanttChart("SJF");
         this.gui = gui;
         log.setGUI(gui);
     }
@@ -133,6 +134,7 @@ public class SJF extends SwingWorker<List<Processo>, String> {
 
         log.close("SJF");
         chart.setVisible(true);
+        chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         return this.saida;
     }
 

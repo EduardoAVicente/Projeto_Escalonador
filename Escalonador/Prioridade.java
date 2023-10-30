@@ -20,7 +20,7 @@ public class Prioridade extends SwingWorker<List<Processo>, String> {
         jobutil = new JobUtil(tempo);
         fila = new Fila();
         log = new Log(outputDirectory);
-        chart = new GanttChart();
+        chart = new GanttChart("Prioridade");
         log.setGUI(gui);
     }
 
@@ -131,6 +131,7 @@ public class Prioridade extends SwingWorker<List<Processo>, String> {
  
          log.close("Prioridade");
          chart.setVisible(true);
+         chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
          return this.saida;
     }
 
