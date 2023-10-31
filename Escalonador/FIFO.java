@@ -40,7 +40,7 @@ public class FIFO extends SwingWorker<List<Processo>, String> {
         log.write("------- INICIANDO SIMULACAO -------");
         log.write("-----------------------------------");
         // loop de processos
-        while (cpu != null) {
+        while (cpu != null  && !isCancelled()) {
             // adiciona a espera
             jobutil.espera();
             if (jobutil.getCiclo() < 10) {
@@ -125,8 +125,10 @@ public class FIFO extends SwingWorker<List<Processo>, String> {
 
         }
         log.close("FIFO");
-        chart.setVisible(true);
-        chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        if (!isCancelled()) {
+            chart.setVisible(true);
+            chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
         return this.saida;
     }
 

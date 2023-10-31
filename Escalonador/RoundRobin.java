@@ -1,3 +1,6 @@
+import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -16,7 +19,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
     private Processo cpu = null;
     GanttChart chart;
     GUI gui;
-
+    Date date;
     public RoundRobin(List<Processo> processos, int Quantum, int tempo, String outputDirectory, GUI gui) {
         this.Quantum = Quantum;
         this.processos = processos;
@@ -29,6 +32,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
         log.setGUI(gui);
     }
 
+
     @Override
     protected List<Processo> doInBackground() throws Exception {
         // Inicializando objetos e variaveis
@@ -36,7 +40,6 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
         cpu = processos.get(0);
         cpu.atualizaEspera();
         processos.remove(0);
-
         // logs iniciais
         log.write("***********************************");
         log.write("***** ESCALONADOR ROUND ROBIN *****");
@@ -45,7 +48,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
         log.write("-----------------------------------");
 
         // loop de processos
-        while (cpu != null) {
+        while (cpu != null && !isCancelled()) {
             // adiciona a espera
             jobutil.espera();
             if (jobutil.getCiclo() < 10) {
@@ -135,13 +138,19 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
 
             log.write("CPU: " + cpu.getPID() + "(" + cpu.getDuracao() + ")");
             // computado o processo da cpu
-            cpu.atualizaDuracao();
-            QuantumCont += 1;
+            if (!isCancelled()) {
+                cpu.atualizaDuracao();
+                QuantumCont += 1;
+            }
+
         }
 
         log.close("RoundRobin");
-        chart.setVisible(true);
-        chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        if (!isCancelled()) {
+            chart.setVisible(true);
+            chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
+
         return this.saida;
     }
 

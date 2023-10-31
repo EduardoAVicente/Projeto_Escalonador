@@ -15,6 +15,10 @@ public class GUI extends javax.swing.JFrame {
     private String entradaSaida = null;
     private List<Processo> entrada;
     private List<String> logConsole;
+    private RoundRobin roundrobin = null;
+    private Prioridade prioridade = null;
+    private FIFO fifo = null;
+    private SJF sjf = null;
 
     public GUI() {
         initComponents();
@@ -382,28 +386,63 @@ public class GUI extends javax.swing.JFrame {
 
     }
 
-    private void simulacao() {
-        List<Processo> processos = new ArrayList();
+    private void cancelarProcesso() {
+        try {
+            if (roundrobin != null && !roundrobin.isDone()) {
+                roundrobin.cancel(true);
+                roundrobin = null;
+            } else if (prioridade != null && !prioridade.isDone()) {
+                prioridade.cancel(true);
+                prioridade = null;
+            } else if (fifo != null && !fifo.isDone()) {
+                fifo.cancel(true);
+                fifo = null;
+            } else if (sjf != null && !sjf.isDone()) {
+                sjf.cancel(true);
+                sjf = null;
+            }
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    public void reset() {
+        roundrobin = null;
+        prioridade = null;
+        fifo = null;
+        sjf = null;
+        painelTabela.setVisible(false);
+        tabela.setVisible(false);
         console.setText("");
+
+    }
+
+    private void simulacao() {
+        cancelarProcesso();
+        List<Processo> processos = new ArrayList();
         int time = parseInteger(entradaCiclo.getText().toString());
         String outputDirectory = entradaSaida;
-
+        reset();
+        while (roundrobin != null || prioridade != null || fifo != null || sjf != null) {
+            System.out.println("aqui");
+        }
         if (selecionarAlgoritmo.getSelectedIndex() == 0) {
-            RoundRobin roundrobin = new RoundRobin(entrada, parseInteger(entradaQuantum.getText().toString()),
+            roundrobin = new RoundRobin(entrada, parseInteger(entradaQuantum.getText().toString()),
                     time, outputDirectory, this);
             roundrobin.execute();
 
         } else if (selecionarAlgoritmo.getSelectedIndex() == 1) {
-            Prioridade prioridade = new Prioridade(entrada, time, outputDirectory,this);
+            prioridade = new Prioridade(entrada, time, outputDirectory, this);
             prioridade.execute();
 
         } else if (selecionarAlgoritmo.getSelectedIndex() == 2) {
-            FIFO FIFO = new FIFO(entrada, time, outputDirectory,this);
-            FIFO.execute();
+            fifo = new FIFO(entrada, time, outputDirectory, this);
+            fifo.execute();
 
         } else if (selecionarAlgoritmo.getSelectedIndex() == 3) {
-            SJF SJF = new SJF(entrada, time, outputDirectory,this);
-           SJF.execute();
+            sjf = new SJF(entrada, time, outputDirectory, this);
+            sjf.execute();
         }
 
     }
@@ -422,6 +461,9 @@ public class GUI extends javax.swing.JFrame {
                 textoErroArquivoProcessos.setVisible(true);
             } else {
                 textoErroArquivoProcessos.setVisible(false);
+                if (entrada != null) {
+                    entrada.clear();
+                }
                 entrada = leitor.Processos(entradaProcesso);
                 if (entrada == null) {
                     textoErroArquivoProcessos.setText("Arquivo Invalido");
@@ -481,6 +523,8 @@ public class GUI extends javax.swing.JFrame {
                 new GUI().setVisible(true);
             }
         });
+
+        
     }
 
     private javax.swing.JTextField arquivoCaminho;
