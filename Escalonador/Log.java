@@ -50,7 +50,7 @@ public class Log {
         while (Files.exists(file)) {
             count++;
             filename = originalFileName + "(" + count + ")";
-            filePath = outputDirectory + filename;
+            filePath = outputDirectory + "/" + filename;
             file = Path.of(filePath + fileExtension);
         }
 

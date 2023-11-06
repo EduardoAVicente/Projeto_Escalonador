@@ -24,10 +24,10 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
         this.Quantum = Quantum;
         this.processos = processos;
         this.saida = new ArrayList<>();
-        jobutil = new JobUtil(tempo);
-        fila = new Fila();
-        log = new Log(outputDirectory);
-        chart = new GanttChart("Round Robin");
+        this.jobutil = new JobUtil(tempo);
+        this.fila = new Fila();
+        this.log = new Log(outputDirectory);
+        this.chart = new GanttChart("Round Robin");
         this.gui = gui;
         log.setGUI(gui);
     }
@@ -72,6 +72,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
             // procedimento de Quantum
             if (QuantumCont == Quantum) {
                 log.write("#[evento] FIM QUANTUM <" + cpu.getPID() + ">");
+                QuantumCont =0;
                 fila.adicionar(cpu);
                 chart.add(cpu.getPID(), jobutil.getCiclo());
                 cpu = fila.remover();

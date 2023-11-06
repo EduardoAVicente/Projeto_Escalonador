@@ -17,10 +17,11 @@ public class Prioridade extends SwingWorker<List<Processo>, String> {
     public Prioridade(List<Processo> processos, int tempo, String outputDirectory, GUI gui) {
         this.processos = processos;
         this.saida = new ArrayList<>();
-        jobutil = new JobUtil(tempo);
-        fila = new Fila();
-        log = new Log(outputDirectory);
-        chart = new GanttChart("Prioridade");
+        this.jobutil = new JobUtil(tempo);
+        this.fila = new Fila();
+        this.log = new Log(outputDirectory);
+        this.chart = new GanttChart("Prioridade");
+        this.gui = gui;
         log.setGUI(gui);
     }
 
