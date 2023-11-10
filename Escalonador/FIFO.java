@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
@@ -79,9 +78,9 @@ public class FIFO extends SwingWorker<List<Processo>, String> {
             if (cpu.getDuracao() <= 0) {
                 log.write("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
                 saida.add(cpu);
+                chart.add(cpu.getPID(), jobutil.getCiclo());
                 // verifica se ainda a processos
                 if (fila.size() > 0) {
-                    chart.add(cpu.getPID(), jobutil.getCiclo());
                     cpu = fila.remover();
                 } else {
                     cpu = null;

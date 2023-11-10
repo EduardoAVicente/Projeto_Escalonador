@@ -113,6 +113,8 @@ public class Prioridade extends SwingWorker<List<Processo>, String> {
  
              // print de estado da fila e cpu
              if (fila.size() == 0) {
+                 System.out.println(jobutil.getCiclo());
+                 chart.add(cpu.getPID(), jobutil.getCiclo());
                  log.write("FILA: Nao ha processos na fila");
              } else {
                  StringBuilder filaString = new StringBuilder();
