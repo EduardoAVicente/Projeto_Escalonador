@@ -39,7 +39,7 @@ public class FIFO extends SwingWorker<List<Processo>, String> {
         log.write("------- INICIANDO SIMULACAO -------");
         log.write("-----------------------------------");
         // loop de processos
-        while (cpu != null  && !isCancelled()) {
+        while (cpu != null && !isCancelled()) {
             // adiciona a espera
             jobutil.espera();
             if (jobutil.getCiclo() < 10) {
@@ -78,11 +78,12 @@ public class FIFO extends SwingWorker<List<Processo>, String> {
             if (cpu.getDuracao() <= 0) {
                 log.write("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
                 saida.add(cpu);
-                chart.add(cpu.getPID(), jobutil.getCiclo());
                 // verifica se ainda a processos
                 if (fila.size() > 0) {
+                    chart.add(cpu.getPID(), jobutil.getCiclo());
                     cpu = fila.remover();
                 } else {
+                    chart.add(cpu.getPID(), jobutil.getCiclo() - 1);
                     cpu = null;
                     if (fila.size() == 0) {
                         log.write("FILA: Nao ha processos na fila");

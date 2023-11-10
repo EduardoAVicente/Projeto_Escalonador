@@ -126,6 +126,7 @@ public class GanttChart extends JFrame {
     }
 
     public void add(String title, int end) {
+        title = "  " + title;
         if (titleToRow.containsKey(title)) {
             List<GanttTask> row = tasks.get(titleToRow.get(title));
             GanttTask prevTask = row.get(row.size() - 1);
