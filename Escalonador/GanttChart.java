@@ -130,12 +130,12 @@ public class GanttChart extends JFrame {
             List<GanttTask> row = tasks.get(titleToRow.get(title));
             GanttTask prevTask = row.get(row.size() - 1);
             int start = Math.max(prevTask.getEnd(), currentTime);
-            GanttTask newTask = new GanttTask(title, end);
+            GanttTask newTask = new GanttTask("  " + title, end);
             newTask.setStart(start);
             row.add(newTask);
         } else {
             List<GanttTask> newRow = new ArrayList<>();
-            GanttTask newTask = new GanttTask(title, end);
+            GanttTask newTask = new GanttTask(" " + title, end);
             newTask.setStart(currentTime);
             newRow.add(newTask);
             tasks.add(newRow);

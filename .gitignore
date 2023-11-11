@@ -8,3 +8,7 @@ comparacao*.txt
 Escalonador/*.jar
 /comparador
 /Escalonador/arquivoProcessos.txt
+/Escalonador/RoundRobin*.txt
+/Escalonador/FIFO*.txt
+/Escalonador/SJF*.txt
+/Escalonador/Prioridade*.txt

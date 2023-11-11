@@ -20,6 +20,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
     GanttChart chart;
     GUI gui;
     Date date;
+
     public RoundRobin(List<Processo> processos, int Quantum, int tempo, String outputDirectory, GUI gui) {
         this.Quantum = Quantum;
         this.processos = processos;
@@ -31,7 +32,6 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
         this.gui = gui;
         log.setGUI(gui);
     }
-
 
     @Override
     protected List<Processo> doInBackground() throws Exception {
@@ -69,28 +69,6 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
                 }
                 QuantumCont = 0;
             }
-            // procedimento de Quantum
-            if (QuantumCont == Quantum) {
-                log.write("#[evento] FIM QUANTUM <" + cpu.getPID() + ">");
-                QuantumCont =0;
-                fila.adicionar(cpu);
-                chart.add(cpu.getPID(), jobutil.getCiclo());
-                cpu = fila.remover();
-                if (fila.size() > 0) { // verifica se o processo mudou para validação da espera
-                    if (fila.get(fila.size() - 1) != cpu) {
-                        cpu.atualizaEspera();
-                    }
-                }
-            }
-
-            // procedimento de chegada de processo
-            if (processos.size() > 0) {
-                if (processos.get(0).getChegada() == jobutil.getCiclo()) {
-                    log.write("#[evento] CHEGADA <" + processos.get(0).getPID() + ">");
-                    fila.adicionar(processos.get(0));
-                    processos.remove(0);
-                }
-            }
 
             // verifica se o processo da cpu terminou
             if (cpu.getDuracao() <= 0) {
@@ -103,6 +81,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
                     cpu = fila.remover();
                     cpu.atualizaEspera();
                 } else {
+                    chart.add(cpu.getPID(), jobutil.getCiclo());
                     cpu = null;
                     if (fila.size() == 0) {
                         log.write("FILA: Nao ha processos na fila");
@@ -121,6 +100,29 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
                     log.write("------- Encerrando simulacao ------");
                     log.write("-----------------------------------");
                     break;
+                }
+            }
+
+            // procedimento de chegada de processo
+            if (processos.size() > 0) {
+                if (processos.get(0).getChegada() == jobutil.getCiclo()) {
+                    log.write("#[evento] CHEGADA <" + processos.get(0).getPID() + ">");
+                    fila.adicionar(processos.get(0));
+                    processos.remove(0);
+                }
+            }
+
+            // procedimento de Quantum
+            if (QuantumCont == Quantum) {
+                log.write("#[evento] FIM QUANTUM <" + cpu.getPID() + ">");
+                QuantumCont = 0;
+                fila.adicionar(cpu);
+                chart.add(cpu.getPID(), jobutil.getCiclo());
+                cpu = fila.remover();
+                if (fila.size() > 0) { // verifica se o processo mudou para validação da espera
+                    if (fila.get(fila.size() - 1) != cpu) {
+                        cpu.atualizaEspera();
+                    }
                 }
             }
 

@@ -91,6 +91,7 @@ public class SJF extends SwingWorker<List<Processo>, String> {
                     chart.add(cpu.getPID(), jobutil.getCiclo());
                     cpu = fila.remover();
                 } else {
+                    chart.add(cpu.getPID(), jobutil.getCiclo());
                     cpu = null;
                     if (fila.size() == 0) {
                         log.write("FILA: Nao ha processos na fila");
