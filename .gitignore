@@ -1,0 +1,8 @@
+/bin
+*.class
+.vscode
+/output
+/comparacao
+GAB *.txt
+comparacao*.txt
+Escalonador/*.jar
