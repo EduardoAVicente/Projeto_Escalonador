@@ -126,17 +126,9 @@ public class GanttChart extends JFrame {
     }
 
     public void add(String title, int end) {
-        title = "  " + title;
         if (titleToRow.containsKey(title)) {
             List<GanttTask> row = tasks.get(titleToRow.get(title));
             GanttTask prevTask = row.get(row.size() - 1);
-    
-            // Verificar se o valor de 'end' já está presente
-            if (prevTask.getEnd() == end) {
-                // Não fazer nada se o valor de 'end' já estiver presente
-                return;
-            }
-    
             int start = Math.max(prevTask.getEnd(), currentTime);
             GanttTask newTask = new GanttTask(title, end);
             newTask.setStart(start);
@@ -152,6 +144,5 @@ public class GanttChart extends JFrame {
         currentTime = end; // Atualiza o tempo atual
         panel.repaint();
     }
-    
 
 }

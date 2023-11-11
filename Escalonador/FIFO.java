@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
@@ -39,7 +40,7 @@ public class FIFO extends SwingWorker<List<Processo>, String> {
         log.write("------- INICIANDO SIMULACAO -------");
         log.write("-----------------------------------");
         // loop de processos
-        while (cpu != null && !isCancelled()) {
+        while (cpu != null  && !isCancelled()) {
             // adiciona a espera
             jobutil.espera();
             if (jobutil.getCiclo() < 10) {
@@ -83,7 +84,6 @@ public class FIFO extends SwingWorker<List<Processo>, String> {
                     chart.add(cpu.getPID(), jobutil.getCiclo());
                     cpu = fila.remover();
                 } else {
-                    chart.add(cpu.getPID(), jobutil.getCiclo() - 1);
                     cpu = null;
                     if (fila.size() == 0) {
                         log.write("FILA: Nao ha processos na fila");
