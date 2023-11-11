@@ -95,7 +95,7 @@ public class RoundRobin extends SwingWorker<List<Processo>, String> {
             // verifica se o processo da cpu terminou
             if (cpu.getDuracao() <= 0) {
                 log.write("#[evento] ENCERRANDO <" + cpu.getPID() + ">");
-                QuantumCont = 0;
+                QuantumCont = 0; 
                 saida.add(cpu);
                 // verifica se ainda a processos
                 if (fila.size() > 0) {
