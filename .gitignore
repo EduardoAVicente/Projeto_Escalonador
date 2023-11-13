@@ -6,3 +6,7 @@
 GAB *.txt
 comparacao*.txt
 Escalonador/*.jar
+Escalonador/FIFO*.txt
+Escalonador/SJF*.txt
+Escalonador/Prioridade*.txt
+Escalonador/RoundRobin*.txt

@@ -1,11 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem Lista os arquivos .bat no diretório atual, exceto teste.bat e compilar.bat
+rem
 set /a count=0
 for %%f in (*.bat) do (
     if not "%%~nxf"=="executar.bat" (
-        if not "%%~nxf"=="compilar.bat" (
+        if not "%%~nxf"=="createJar.bat" (
             set /a count+=1
             for %%A in ("%%f") do (
                 echo !count!. %%~nA
@@ -21,7 +21,7 @@ rem Executa o arquivo .bat correspondente ao número inserido
 set /a i=0
 for %%f in (*.bat) do (
     if not "%%~nxf"=="executar.bat" (
-        if not "%%~nxf"=="compilar.bat" (
+        if not "%%~nxf"=="createJar.bat" (
             set /a i+=1
             if !i! equ %input% (
                 call "%%f"

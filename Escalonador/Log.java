@@ -18,7 +18,7 @@ public class Log {
     }
 
     public void write(String str) {
-       // System.out.println(str);
+        System.out.println(str);
         strings.add(str);
         if (gui != null) {
             gui.atualizaConsole(str);
